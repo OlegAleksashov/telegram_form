@@ -1,7 +1,12 @@
 import "./App.css";
+import SendForm from "./components/SendForm";
 
 function App() {
-  return <div className="App">Sending form</div>;
+  return (
+    <>
+      <SendForm />
+    </>
+  );
 }
 
 export default App;
