@@ -15,10 +15,10 @@ const signupSchema = Joi.object({
     .email({ tlds: { allow: false } })
     .required(),
   phone: Joi.string()
-    .regex(/^[0-9]{10}$/)
+    .regex(/^[0-9]/)
     .min(9)
     .max(13)
     .required(),
 });
 
-export const validateRegister = validator(signupSchema);
+export const validateData = validator(signupSchema);
