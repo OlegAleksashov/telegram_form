@@ -10,7 +10,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: rgb(18, 22, 36);
+  background-color: rgb(171, 181, 219);
 }
 
 code {
@@ -19,5 +19,5 @@ code {
 }
 
 #root {
-  background-color: rgb(18, 22, 36);
+  background-color: rgb(171, 181, 219);
 }

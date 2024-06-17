@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Button from "@mui/joy/Button";
 import Input from "@mui/joy/Input";
 import Modal from "@mui/joy/Modal";
@@ -6,6 +6,7 @@ import Sheet from "@mui/joy/Sheet";
 import Box from "@mui/joy/Box";
 import { Typography } from "@mui/material";
 import ModalClose from "@mui/joy/ModalClose";
+import TextField from "@mui/material/TextField";
 import { notifications } from "@mantine/notifications";
 import { validateData } from "../assest/formValidator";
 import { sendPhoto } from "../api/telegram";
@@ -18,6 +19,13 @@ const SendForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [file, setFile] = useState(null);
+  const inputFileRef = useRef(null);
+
+  const openDialog = () => {
+    const inputFile = inputFileRef.current;
+    if (!inputFile) return;
+    inputFile.click();
+  };
 
   const handleClose = () => {
     setIsOpen(false);
@@ -105,13 +113,23 @@ const SendForm = () => {
           type="phone"
           placeholder="Enter phone..."
         ></Input>
-        <Input
+        <input
+          ref={inputFileRef}
+          style={{ display: "none" }}
           size="lg"
           onChange={handleFileChange}
           type="file"
           accept="image/*"
           placeholder="Upload foto..."
-        ></Input>
+        ></input>
+        <TextField
+          variant="standard"
+          value={file ? file.name : "No file chosen"}
+          style={{ marginRight: "0.5rem" }}
+        />
+        <Button loading={isLoading} size="md" onClick={openDialog}>
+          Choose file
+        </Button>
         <Button loading={isLoading} size="md" onClick={handleClick}>
           Send form
         </Button>
