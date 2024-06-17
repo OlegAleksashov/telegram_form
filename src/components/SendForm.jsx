@@ -56,7 +56,7 @@ const SendForm = () => {
 
       notifications.show({
         title: "The form was sent",
-        message: "Subscribe to the channel!",
+        message: "We'll contact you soon!",
       });
     } catch (e) {
       notifications.show({
@@ -66,10 +66,10 @@ const SendForm = () => {
       });
     } finally {
       setIsLoading(false);
-      setName("")
-      setEmail("")
-      setPhone("")
-      setFile(null)
+      setName("");
+      setEmail("");
+      setPhone("");
+      setFile(null);
     }
   };
 
@@ -131,7 +131,7 @@ const SendForm = () => {
           value={file ? file.name : "No file chosen"}
           style={{ marginRight: "0.5rem" }}
         />
-        <Button loading={isLoading} size="md" onClick={openDialog}>
+        <Button size="md" onClick={openDialog}>
           Choose file
         </Button>
         <Button loading={isLoading} size="md" onClick={handleClick}>
