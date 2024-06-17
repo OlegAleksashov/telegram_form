@@ -8,18 +8,23 @@ import { Typography } from "@mui/material";
 import ModalClose from "@mui/joy/ModalClose";
 import { notifications } from "@mantine/notifications";
 import { validateData } from "../assest/formValidator";
-import { sendmessage } from "../api/telegram";
+import { sendMessage } from "../api/telegram";
 
 const SendForm = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [file, setFile] = useState(null);
 
   const handleClose = () => {
-    setOpen(false);
+    setIsOpen(false);
+  };
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
   };
 
   const handleClick = async () => {
@@ -31,7 +36,7 @@ const SendForm = () => {
     if (error) {
       console.log(error);
       setError(error.details.map((d) => d.message).join("\n"));
-      setOpen(!open);
+      setIsOpen(!isOpen);
       return;
     }
 
@@ -42,7 +47,7 @@ const SendForm = () => {
        %0AEmail: ${email}
        %0APhone: ${phone}`;
 
-      await sendmessage(message);
+      await sendMessage(message);
 
       notifications.show({
         title: "The form was sent",
@@ -57,8 +62,6 @@ const SendForm = () => {
     } finally {
       setIsLoading(false);
     }
-
-    //console.log("values", values);
   };
 
   return (
@@ -105,6 +108,13 @@ const SendForm = () => {
           type="phone"
           placeholder="Enter phone..."
         ></Input>
+        <Input
+          size="lg"
+          value={file}
+          onChange={handleFileChange}
+          type="submit"
+          placeholder="Send foto..."
+        ></Input>
         <Button loading={isLoading} size="md" onClick={handleClick}>
           Send form
         </Button>
@@ -112,7 +122,7 @@ const SendForm = () => {
           <Modal
             aria-labelledby="modal-title"
             aria-describedby="modal-desc"
-            open={open}
+            open={isOpen}
             onClose={handleClose}
             sx={{
               display: "flex",
