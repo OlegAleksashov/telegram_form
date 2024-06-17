@@ -66,6 +66,10 @@ const SendForm = () => {
       });
     } finally {
       setIsLoading(false);
+      setName("")
+      setEmail("")
+      setPhone("")
+      setFile(null)
     }
   };
 
