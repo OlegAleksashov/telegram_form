@@ -1,29 +1,44 @@
+import axios from "axios";
 import { TOKEN, CHAT_ID } from "../values";
 
 const bsaeUrl = `https://api.telegram.org/bot${TOKEN}/`;
 
+/*This is currently an unnecessary feature.*/
 export const sendMessage = async (message: string): Promise<void> => {
   const url: string = `${bsaeUrl}sendMessage?chat_id=${CHAT_ID}&text=${message}`;
-
-  const response: Response = await fetch(url);
-
-  if (!response.ok) {
-    const error = await response.json();
-    await Promise.reject(error.description || "Something went wrong!");
+  try {
+    const response: Response = await fetch(url);
+    if (!response.ok) {
+      const error = await response.json();
+      await Promise.reject(error.description || "Something went wrong!");
+    }
+    console.log("Message sent successfully", response);
+  } catch (error) {
+    console.error("Error sending message:", error);
+    throw error;
   }
-
-  console.log("response", response);
 };
 
-export const sendPhoto = async (photo: string): Promise<void> => {
-  const url: string = `${bsaeUrl}sendPhoto?chat_id=${CHAT_ID}&text=${photo}`;
+export const sendPhoto = async (
+  file: string,
+  caption: string
+): Promise<void> => {
+  const url = `${bsaeUrl}sendPhoto`;
 
-  const response: Response = await fetch(url);
+  const formData = new FormData();
+  formData.append("chat_id", CHAT_ID);
+  formData.append("photo", file);
+  formData.append("caption", caption);
 
-  if (!response.ok) {
-    const error = await response.json();
-    await Promise.reject(error.description || "Something went wrong!");
+  try {
+    const response = await axios.post(url, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    console.log("Photo uploaded successfully:", response.data);
+  } catch (error) {
+    console.error("Error uploading photo:", error);
+    throw error;
   }
-
-  console.log("response", response);
-}
+};

@@ -8,7 +8,7 @@ import { Typography } from "@mui/material";
 import ModalClose from "@mui/joy/ModalClose";
 import { notifications } from "@mantine/notifications";
 import { validateData } from "../assest/formValidator";
-import { sendMessage } from "../api/telegram";
+import { sendPhoto } from "../api/telegram";
 
 const SendForm = () => {
   const [name, setName] = useState("");
@@ -30,28 +30,25 @@ const SendForm = () => {
   const handleClick = async () => {
     const formData = { name, email, phone };
 
-    console.log(formData);
-
     const { error } = validateData(formData);
     if (error) {
-      console.log(error);
       setError(error.details.map((d) => d.message).join("\n"));
-      setIsOpen(!isOpen);
+      setIsOpen(true);
       return;
     }
 
     try {
       setIsLoading(true);
 
-      const message = `Name: ${name}
-       %0AEmail: ${email}
-       %0APhone: ${phone}`;
+      const message = `Name: ${name}\nEmail: ${email}\nPhone: ${phone}`;
 
-      await sendMessage(message);
+      if (file) {
+        await sendPhoto(file, message);
+      }
 
       notifications.show({
         title: "The form was sent",
-        message: "Subdcribe to the chanel!",
+        message: "Subscribe to the channel!",
       });
     } catch (e) {
       notifications.show({
@@ -110,10 +107,10 @@ const SendForm = () => {
         ></Input>
         <Input
           size="lg"
-          value={file}
           onChange={handleFileChange}
-          type="submit"
-          placeholder="Send foto..."
+          type="file"
+          accept="image/*"
+          placeholder="Upload foto..."
         ></Input>
         <Button loading={isLoading} size="md" onClick={handleClick}>
           Send form
