@@ -40,7 +40,7 @@ const SendForm = () => {
 
     const { error } = validateData(formData);
     if (error) {
-      setError(error.details.map((d) => d.message).join("\n"));
+      setError(error.details);
       setIsOpen(true);
       return;
     }
@@ -137,7 +137,7 @@ const SendForm = () => {
         <Button loading={isLoading} size="md" onClick={handleClick}>
           Send form
         </Button>
-        {error && (
+        {error.length > 0 && (
           <Modal
             aria-labelledby="modal-title"
             aria-describedby="modal-desc"
@@ -159,9 +159,9 @@ const SendForm = () => {
               }}
             >
               <ModalClose variant="plain" sx={{ ml: 2 }} />
-              <div>
-                <pre>{error}</pre>
-              </div>
+              {error.map((err, index) => (
+                <Typography key={index}>{err.message}</Typography>
+              ))}
             </Sheet>
           </Modal>
         )}
