@@ -1,24 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import { Notifications } from "@mantine/notifications";
+import { MantineProvider } from "@mantine/core";
+import { Global } from "@emotion/react";
+import SendForm from "./components/SendForm";
+import "@mantine/core/styles.css";
+import "@mantine/notifications/styles.css";
+import "./App.css";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <MantineProvider>
+      <Global
+        styles={() => ({
+          body: {
+            backgroundColor: "rgb(171, 181, 219)",
+          },
+        })}
+      />
+      <Notifications />
+      <SendForm />
+    </MantineProvider>
   );
 }
 
